@@ -3,97 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Voice Clone - Anh Lin</title>
+    <title>Anh Lin - Chuyên Gia Giọng Nói AI</title>
     <style>
-        body { font-family: sans-serif; background-color: #121212; color: white; text-align: center; padding: 20px; }
-        .card { background-color: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; max-width: 400px; margin: auto; }
-        input, button, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; font-size: 14px; }
-        button { background-color: #28a745; color: white; font-weight: bold; cursor: pointer; }
-        .clone-section { border-top: 1px solid #444; margin-top: 20px; padding-top: 10px; text-align: left; }
-        label { font-size: 13px; color: #aaa; margin-left: 5px; }
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 30px; border-radius: 24px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; }
+        
+        /* LOGO ANH LIN */
+        .logo-container { margin-bottom: 25px; }
+        .logo-circle { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 30px; font-weight: bold; color: white; transform: rotate(-10deg); box-shadow: 0 10px 15px rgba(0, 210, 255, 0.3); }
+        .brand-name { font-size: 22px; font-weight: 800; letter-spacing: 1px; background: linear-gradient(to right, #00d2ff, #91eaff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .section { margin-top: 25px; text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; }
+        .section-title { font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        
+        label { font-size: 12px; color: #94a3b8; display: block; margin-bottom: 5px; margin-left: 2px; }
+        input, select, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
+        
+        button { border: none; font-weight: 700; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-main { background: linear-gradient(to right, var(--primary), var(--secondary)); box-shadow: 0 4px 12px rgba(0, 210, 255, 0.2); }
+        .btn-main:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-record { background: #ef4444; }
+        .btn-stop { background: #f97316; animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        #status { font-size: 13px; color: var(--primary); margin-top: 15px; font-weight: 500; min-height: 20px; }
+        audio { width: 100%; margin-top: 20px; border-radius: 30px; height: 40px; filter: invert(100%) hue-rotate(180deg) brightness(1.5); }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>🎙️ Anh Lin Voice Clone</h2>
-        <p style="font-size: 12px; color: #888;">Gói miễn phí: 10,000 ký tự/tháng</p>
-        
-        <div class="clone-section">
-            <p style="font-size: 14px; color: #f39c12; font-weight: bold;">1. Tự tải giọng mẫu (AI học theo)</p>
-            <label>Tải file giọng muốn nhái (.mp3):</label>
-            <input type="file" id="sampleInput" accept="audio/*">
-            <input type="text" id="voiceName" placeholder="Đặt tên cho giọng này...">
-            <button id="cloneBtn">TẠO GIỌNG MỚI</button>
-        </div>
 
-        <div class="clone-section" style="margin-top:30px;">
-            <p style="font-size: 14px; color: #007bff; font-weight: bold;">2. Bắt đầu đổi giọng</p>
-            <label>Chọn giọng AI đã tạo:</label>
-            <select id="voiceList"><option>Đang tải danh sách...</option></select>
-            <label>Chọn file âm thanh cần đổi:</label>
-            <input type="file" id="audioInput" accept="audio/*">
-            <button id="convertBtn" style="background-color: #007bff;">BẮT ĐẦU ĐỔI GIỌNG</button>
-        </div>
-        
-        <div id="status" style="font-size: 13px; margin-top: 10px; color: #2ecc71;"></div>
-        <audio id="audioPlayer" controls style="display:none; margin-top:20px; width:100%"></audio>
+<div class="card">
+    <div class="logo-container">
+        <div class="logo-circle">AL</div>
+        <div class="brand-name">ANH LIN VOICE</div>
     </div>
 
-    <script>
-        const API_KEY = "sk_9dcfa023b4ba75ae26c8c5158d5f36474ca82c68c13035e2";
-        const status = document.getElementById('status');
+    <div class="section">
+        <div class="section-title"><span>👤</span> HUẤN LUYỆN GIỌNG MỚI</div>
+        <label>File giọng mẫu (.mp3):</label>
+        <input type="file" id="sampleInput" accept="audio/*">
+        <input type="text" id="voiceName" placeholder="Đặt tên cho giọng này...">
+        <button class="btn-main" id="cloneBtn">TẠO GIỌNG AI NGAY</button>
+    </div>
 
-        async function loadVoices() {
-            try {
-                const res = await fetch('https://api.elevenlabs.io/v1/voices', { headers: {'xi-api-key': API_KEY} });
-                const data = await res.json();
-                document.getElementById('voiceList').innerHTML = data.voices.map(v => `<option value="${v.voice_id}">${v.name}</option>`).join('');
-            } catch (e) { status.innerText = "Lỗi kết nối danh sách giọng!"; }
-        }
-        loadVoices();
+    <div class="section">
+        <div class="section-title"><span>🎭</span> BIẾN ĐỔI GIỌNG NÓI</div>
+        <label>Chọn giọng AI để sử dụng:</label>
+        <select id="voiceList"><option>Đang kết nối ElevenLabs...</option></select>
+        
+        <label>Đầu vào (Ghi âm hoặc Tải file):</label>
+        <div style="display: flex; gap: 8px;">
+            <button id="startRecord" class="btn-record">🎤 GHI ÂM</button>
+            <button id="stopRecord" class="btn-stop" style="display:none">🛑 DỪNG LẠI</button>
+        </div>
+        <input type="file" id="audioInput" accept="audio/*">
+        <button class="btn-main" id="convertBtn">BẮT ĐẦU CHUYỂN ĐỔI</button>
+    </div>
 
-        // Bước 1: Tạo giọng Clone (Nhái giọng)
-        document.getElementById('cloneBtn').onclick = async () => {
-            const file = document.getElementById('sampleInput').files[0];
-            const name = document.getElementById('voiceName').value;
-            if (!file || !name) return alert("Vui lòng chọn file mẫu và đặt tên!");
+    <div id="status"></div>
+    <audio id="audioPlayer" controls style="display:none"></audio>
+</div>
 
-            status.innerText = "⏳ Đang tạo giọng mẫu... đợi chút nhé!";
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('files', file);
+<script>
+    const API_KEY = "sk_9dcfa023b4ba75ae26c8c5158d5f36474ca82c68c13035e2";
+    const status = document.getElementById('status');
+    let mediaRecorder, audioChunks = [], recordedBlob;
 
-            const res = await fetch('https://api.elevenlabs.io/v1/voices/add', {
-                method: 'POST', headers: {'xi-api-key': API_KEY}, body: formData
-            });
+    async function loadVoices() {
+        try {
+            const res = await fetch('https://api.elevenlabs.io/v1/voices', { headers: {'xi-api-key': API_KEY} });
+            const data = await res.json();
+            document.getElementById('voiceList').innerHTML = data.voices.map(v => `<option value="${v.voice_id}">${v.name}</option>`).join('');
+        } catch (e) { status.innerText = "⚠️ Không thể tải danh sách giọng."; }
+    }
+    loadVoices();
 
-            if (res.ok) {
-                status.innerText = "✅ Đã tạo xong giọng! Hãy chọn nó ở Bước 2.";
-                loadVoices();
-            } else { status.innerText = "❌ Lỗi! Có thể file quá lớn hoặc hết gói miễn phí."; }
+    // GHI ÂM
+    document.getElementById('startRecord').onclick = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            recordedBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+            status.innerText = "✨ Ghi âm thành công! Sẵn sàng đổi giọng.";
         };
+        audioChunks = []; mediaRecorder.start();
+        document.getElementById('startRecord').style.display = "none";
+        document.getElementById('stopRecord').style.display = "block";
+        status.innerText = "🔴 Đang ghi âm giọng của bạn...";
+    };
 
-        // Bước 2: Đổi giọng (Speech-to-Speech)
-        document.getElementById('convertBtn').onclick = async () => {
-            const file = document.getElementById('audioInput').files[0];
-            if (!file) return alert("Chọn file âm thanh cần đổi giọng!");
+    document.getElementById('stopRecord').onclick = () => {
+        mediaRecorder.stop();
+        document.getElementById('startRecord').style.display = "block";
+        document.getElementById('stopRecord').style.display = "none";
+    };
 
-            status.innerText = "⚡ Đang biến đổi giọng... vui lòng đợi!";
-            const formData = new FormData();
-            formData.append('audio', file);
-            formData.append('model_id', 'eleven_multilingual_sts_v2');
+    // TẠO GIỌNG (CLONE)
+    document.getElementById('cloneBtn').onclick = async () => {
+        const file = document.getElementById('sampleInput').files[0];
+        const name = document.getElementById('voiceName').value;
+        if (!file || !name) return alert("Vui lòng nhập tên và file mẫu!");
+        status.innerText = "⌛ Đang huấn luyện AI theo giọng của bạn...";
+        const formData = new FormData();
+        formData.append('name', name); formData.append('files', file);
+        const res = await fetch('https://api.elevenlabs.io/v1/voices/add', {
+            method: 'POST', headers: {'xi-api-key': API_KEY}, body: formData
+        });
+        if (res.ok) { status.innerText = "✅ Thành công! Giọng mới đã có trong danh sách."; loadVoices(); }
+        else { status.innerText = "❌ Lỗi: Có thể hết giới hạn gói miễn phí."; }
+    };
 
-            const res = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${document.getElementById('voiceList').value}`, {
-                method: 'POST', headers: {'xi-api-key': API_KEY}, body: formData
-            });
+    // CHUYỂN ĐỔI GIỌNG (STITCH)
+    document.getElementById('convertBtn').onclick = async () => {
+        const fileInput = document.getElementById('audioInput').files[0];
+        const fileToUse = fileInput || recordedBlob;
+        if (!fileToUse) return alert("Hãy ghi âm hoặc tải file âm thanh lên!");
+        status.innerText = "⚡ Đang AI hóa giọng nói... đợi xíu nhé!";
+        const formData = new FormData();
+        formData.append('audio', fileToUse);
+        formData.append('model_id', 'eleven_multilingual_sts_v2');
+        const res = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${document.getElementById('voiceList').value}`, {
+            method: 'POST', headers: {'xi-api-key': API_KEY}, body: formData
+        });
+        if (res.ok) {
+            const url = URL.createObjectURL(await res.blob());
+            const player = document.getElementById('audioPlayer');
+            player.src = url; player.style.display = "block";
+            status.innerText = "🎉 Hoàn tất! Nhấn play để nghe.";
+        } else { status.innerText = "❌ Chuyển đổi thất bại."; }
+    };
+</script>
 
-            if (res.ok) {
-                const url = URL.createObjectURL(await res.blob());
-                const player = document.getElementById('audioPlayer');
-                player.src = url; player.style.display = "block";
-                status.innerText = "✅ Xong rồi! Nghe thử bên dưới.";
-            } else { status.innerText = "❌ Lỗi đổi giọng! Thử lại sau nhé."; }
-        };
-    </script>
 </body>
 </html>
