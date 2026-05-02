@@ -3,131 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anh Lin Voice Pro</title>
+    <title>Anh Lin Voice Pro - Full Features</title>
     <style>
         :root { --p: #00d2ff; --s: #3a7bd5; --bg: #0f172a; --c: #1e293b; }
-        body { font-family: sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .card { background: var(--c); width: 100%; max-width: 400px; padding: 25px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .logo { width: 60px; height: 60px; background: linear-gradient(135deg, var(--p), var(--s)); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px; font-weight: bold; transform: rotate(-5deg); box-shadow: 0 5px 15px rgba(0,210,255,0.3); }
-        .box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: left; }
-        input, select, button { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; outline: none; }
-        button { border: none; font-weight: 700; cursor: pointer; background: linear-gradient(to right, var(--p), var(--s)); transition: 0.2s; }
-        button:active { transform: scale(0.95); }
-        #status { font-size: 13px; color: #94a3b8; margin: 10px 0; text-align: center; min-height: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .card { background: var(--c); width: 100%; max-width: 450px; padding: 25px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .logo { width: 70px; height: 70px; background: linear-gradient(135deg, var(--p), var(--s)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 30px; font-weight: bold; transform: rotate(-5deg); box-shadow: 0 10px 20px rgba(0,210,255,0.3); }
+        .title { font-size: 24px; font-weight: 800; background: linear-gradient(to right, #00d2ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; }
+        .section { background: rgba(255,255,255,0.03); padding: 18px; border-radius: 18px; margin-bottom: 20px; text-align: left; border: 1px solid rgba(255,255,255,0.05); }
+        .label { font-size: 11px; color: var(--p); font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
+        input[type="text"], select, input[type="file"] { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 12px; }
+        button { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; color: white; font-size: 14px; }
+        .btn-primary { background: linear-gradient(to right, var(--p), var(--s)); }
+        .btn-rec { background: #ef4444; }
+        .btn-stop { background: #f97316; animation: pulse 1.5s infinite; }
+        .btn-success { background: #22c55e; }
+        @keyframes pulse { 50% { opacity: 0.6; } }
+        #status { font-size: 13px; color: #94a3b8; margin: 15px 0; text-align: center; font-style: italic; }
         audio { width: 100%; margin-top: 15px; display: none; }
-        .btn-dl { background: #22c55e; display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
+
 <div class="card">
     <div class="logo">AL</div>
-    <h2 style="margin-bottom:20px; background: linear-gradient(to right, #00d2ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ANH LIN VOICE PRO</h2>
-    
-    <div class="box">
-        <label style="font-size:12px; color:var(--p)">1. CHỌN GIỌNG AI</label>
-        <select id="vList"><option value="">Đang kết nối ElevenLabs...</option></select>
-        
-        <label style="font-size:12px; color:var(--p)">2. GHI ÂM HOẶC CHỌN FILE</label>
-        <div style="display: flex; gap: 8px;">
-            <button id="recS" style="background:#ef4444">🎤 GHI ÂM</button>
-            <button id="recE" style="background:#f97316; display:none">🛑 DỪNG</button>
+    <div class="title">ANH LIN AI VOICE</div>
+
+    <div class="section">
+        <span class="label">1. Huấn luyện giọng mẫu mới</span>
+        <input type="text" id="voiceName" placeholder="Đặt tên giọng (Ví dụ: Giọng của Anh Lin)">
+        <input type="file" id="sampleFile" accept="audio/*">
+        <div class="btn-group">
+            <button id="recSampleStart" class="btn-rec">🎤 GHI ÂM MẪU</button>
+            <button id="recSampleStop" class="btn-stop" style="display:none">🛑 DỪNG GHI</button>
         </div>
-        <input type="file" id="fInput" accept="audio/*">
-        
-        <button id="convertBtn" style="margin-top:10px">BẮT ĐẦU ĐỔI GIỌNG</button>
+        <button id="uploadSampleBtn" class="btn-primary" style="width: 100%;">HUẤN LUYỆN GIỌNG AI</button>
+    </div>
+
+    <div class="section">
+        <span class="label">2. Đổi giọng AI</span>
+        <select id="voiceList"><option>Đang tải danh sách giọng...</option></select>
+        <input type="file" id="targetFile" accept="audio/*">
+        <div class="btn-group">
+            <button id="recTargetStart" class="btn-rec">🎤 GHI ÂM TRỰC TIẾP</button>
+            <button id="recTargetStop" class="btn-stop" style="display:none">🛑 DỪNG GHI</button>
+        </div>
+        <button id="convertBtn" class="btn-primary" style="width: 100%;">BẮT ĐẦU CHUYỂN ĐỔI</button>
     </div>
 
     <div id="status">Sẵn sàng!</div>
-    <audio id="player" controls></audio>
-    <button id="dlBtn" class="btn-dl">⬇️ TẢI GIỌNG VỀ MÁY</button>
+    <audio id="audioPlayer" controls></audio>
+    <button id="downloadBtn" class="btn-success" style="display:none; width: 100%; margin-top: 15px;">⬇️ TẢI GIỌNG ĐÃ ĐỔI VỀ MÁY</button>
 </div>
 
 <script>
-    // Mã API Key mới để khắc phục lỗi "Đang tải"
-    const KEY = "a02cf7278f913a0f143c834edc3111ef0a0b9e4929e501b168193475546e01dd";
-    const status = document.getElementById('status');
-    const vList = document.getElementById('vList');
-    const player = document.getElementById('player');
-    const dlBtn = document.getElementById('dlBtn');
-    let mRec, chunks = [], blobAudio;
+    const API_KEY = "A02cf7278f913a0f143c834edc3111ef0a0b9e4929e501b168193475546e01dd";
+    const statusTxt = document.getElementById('status');
+    const voiceList = document.getElementById('voiceList');
+    const player = document.getElementById('audioPlayer');
+    const dlBtn = document.getElementById('downloadBtn');
+    let mediaRecorder, audioChunks = [], sampleBlob, targetBlob;
 
-    // Lấy danh sách giọng nói
-    async function loadVoices() {
+    async function fetchVoices() {
         try {
-            const r = await fetch('https://api.elevenlabs.io/v1/voices', { headers: {'xi-api-key': KEY} });
-            const d = await r.json();
-            if (d.voices) {
-                vList.innerHTML = d.voices.map(v => `<option value="${v.voice_id}">${v.name}</option>`).join('');
-                status.innerText = "✅ Đã kết nối thành công!";
+            const res = await fetch('https://api.elevenlabs.io/v1/voices', { headers: { 'xi-api-key': API_KEY } });
+            const data = await res.json();
+            if (data.voices) {
+                voiceList.innerHTML = data.voices.map(v => `<option value="${v.voice_id}">${v.name}</option>`).join('');
+                statusTxt.innerText = "✅ Đã tải xong danh sách giọng!";
             }
-        } catch (e) { 
-            status.innerText = "❌ Lỗi: Không thể lấy danh sách giọng!";
-            vList.innerHTML = "<option>Lỗi kết nối API</option>";
-        }
+        } catch (e) { statusTxt.innerText = "❌ Lỗi kết nối API!"; }
     }
-    loadVoices();
+    fetchVoices();
 
-    // Ghi âm
-    document.getElementById('recS').onclick = async () => {
-        try {
-            const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mRec = new MediaRecorder(s);
-            mRec.ondataavailable = e => chunks.push(e.data);
-            mRec.onstop = () => {
-                blobAudio = new Blob(chunks, { type: 'audio/mp3' });
-                status.innerText = "✅ Đã ghi âm xong!";
-            };
-            chunks = []; mRec.start();
-            document.getElementById('recS').style.display = "none";
-            document.getElementById('recE').style.display = "block";
-            status.innerText = "🔴 Đang ghi âm...";
-        } catch (e) { alert("Bạn cần cho phép Micro để ghi âm!"); }
+    async function startRecording(type) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(audioChunks, { type: 'audio/mpeg' });
+            if (type === 'sample') sampleBlob = blob; else targetBlob = blob;
+            statusTxt.innerText = "✅ Ghi âm xong!";
+        };
+        mediaRecorder.start();
+        statusTxt.innerText = "🔴 Đang ghi âm...";
+    }
+
+    document.getElementById('recSampleStart').onclick = () => { startRecording('sample'); document.getElementById('recSampleStart').style.display='none'; document.getElementById('recSampleStop').style.display='block'; };
+    document.getElementById('recSampleStop').onclick = () => { mediaRecorder.stop(); document.getElementById('recSampleStart').style.display='block'; document.getElementById('recSampleStop').style.display='none'; };
+    document.getElementById('recTargetStart').onclick = () => { startRecording('target'); document.getElementById('recTargetStart').style.display='none'; document.getElementById('recTargetStop').style.display='block'; };
+    document.getElementById('recTargetStop').onclick = () => { mediaRecorder.stop(); document.getElementById('recTargetStart').style.display='block'; document.getElementById('recTargetStop').style.display='none'; };
+
+    document.getElementById('uploadSampleBtn').onclick = async () => {
+        const name = document.getElementById('voiceName').value;
+        const file = document.getElementById('sampleFile').files[0] || sampleBlob;
+        if (!name || !file) return alert("Thiếu tên hoặc file mẫu!");
+        statusTxt.innerText = "⏳ Đang huấn luyện AI...";
+        const fd = new FormData(); fd.append('name', name); fd.append('files', file);
+        const res = await fetch('https://api.elevenlabs.io/v1/voices/add', { method: 'POST', headers: { 'xi-api-key': API_KEY }, body: fd });
+        if (res.ok) { statusTxt.innerText = "🎉 Xong! Đang cập nhật..."; setTimeout(fetchVoices, 2000); }
     };
 
-    document.getElementById('recE').onclick = () => {
-        mRec.stop();
-        document.getElementById('recS').style.display = "block";
-        document.getElementById('recE').style.display = "none";
-    };
-
-    // Đổi giọng và Tải về
     document.getElementById('convertBtn').onclick = async () => {
-        const fileIn = document.getElementById('fInput').files[0];
-        const finalAudio = fileIn || blobAudio;
-        
-        if (!vList.value) return alert("Vui lòng đợi danh sách giọng tải xong!");
-        if (!finalAudio) return alert("Hãy ghi âm hoặc chọn file trước!");
-
-        status.innerText = "⚡ Đang AI hóa giọng nói...";
-        dlBtn.style.display = "none";
-        player.style.display = "none";
-
-        const fd = new FormData();
-        fd.append('audio', finalAudio);
-        fd.append('model_id', 'eleven_multilingual_sts_v2');
-
-        try {
-            const r = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${vList.value}`, {
-                method: 'POST', headers: {'xi-api-key': KEY}, body: fd
-            });
-
-            if (r.ok) {
-                const b = await r.blob();
-                const u = URL.createObjectURL(b);
-                player.src = u;
-                player.style.display = "block";
-                player.play();
-                
-                dlBtn.style.display = "block";
-                dlBtn.onclick = () => {
-                    const a = document.createElement('a');
-                    a.href = u;
-                    a.download = 'AnhLin_VoiceAI.mp3';
-                    a.click();
-                };
-                status.innerText = "🎉 Hoàn tất! Bạn có thể nghe và tải về.";
-            } else { status.innerText = "❌ Lỗi: Hết lượt dùng hoặc file lỗi!"; }
-        } catch (e) { status.innerText = "❌ Lỗi đường truyền!"; }
+        const file = document.getElementById('targetFile').files[0] || targetBlob;
+        if (!file) return alert("Hãy chọn file hoặc ghi âm!");
+        statusTxt.innerText = "⚡ Đang xử lý giọng nói...";
+        dlBtn.style.display = 'none'; player.style.display = 'none';
+        const fd = new FormData(); fd.append('audio', file); fd.append('model_id', 'eleven_multilingual_sts_v2');
+        const res = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${voiceList.value}`, { method: 'POST', headers: { 'xi-api-key': API_KEY }, body: fd });
+        if (res.ok) {
+            const b = await res.blob(); const u = URL.createObjectURL(b);
+            player.src = u; player.style.display = 'block'; player.play();
+            dlBtn.style.display = 'block'; dlBtn.onclick = () => { const a = document.createElement('a'); a.href = u; a.download = 'AnhLin_AI.mp3'; a.click(); };
+            statusTxt.innerText = "🎉 Hoàn tất!";
+        } else { statusTxt.innerText = "❌ Lỗi xử lý!"; }
     };
 </script>
 </body>
