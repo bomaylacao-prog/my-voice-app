@@ -3,88 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anh Lin AI - Pro Voice</title>
+    <title>Anh Lin Voice Pro</title>
     <style>
         :root { --p: #00d2ff; --s: #3a7bd5; --bg: #0f172a; --c: #1e293b; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .card { background: var(--c); width: 100%; max-width: 400px; padding: 25px; border-radius: 25px; box-shadow: 0 15px 30px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        
-        .logo { width: 65px; height: 65px; background: linear-gradient(135deg, var(--p), var(--s)); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 28px; font-weight: bold; transform: rotate(-5deg); box-shadow: 0 8px 20px rgba(0,210,255,0.3); }
-        .title { font-size: 22px; font-weight: 800; background: linear-gradient(to right, #00d2ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; }
-
+        body { font-family: sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .card { background: var(--c); width: 100%; max-width: 400px; padding: 25px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .logo { width: 60px; height: 60px; background: linear-gradient(135deg, var(--p), var(--s)); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px; font-weight: bold; transform: rotate(-5deg); box-shadow: 0 5px 15px rgba(0,210,255,0.3); }
         .box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: left; }
-        .label { font-size: 12px; color: var(--p); font-weight: 600; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        
         input, select, button { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; outline: none; }
-        button { border: none; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(to right, var(--p), var(--s)); }
-        button:active { transform: scale(0.96); }
-        
-        .btn-rec { background: #ef4444; }
-        .btn-stop { background: #f97316; animation: pulse 1s infinite; }
-        .btn-dl { background: #22c55e; display: none; margin-top: 15px; }
-        
-        @keyframes pulse { 50% { opacity: 0.7; } }
-        #status { font-size: 13px; color: #94a3b8; margin: 10px 0; min-height: 20px; text-align: center; }
+        button { border: none; font-weight: 700; cursor: pointer; background: linear-gradient(to right, var(--p), var(--s)); transition: 0.2s; }
+        button:active { transform: scale(0.95); }
+        #status { font-size: 13px; color: #94a3b8; margin: 10px 0; text-align: center; min-height: 20px; }
         audio { width: 100%; margin-top: 15px; display: none; }
+        .btn-dl { background: #22c55e; display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
-
 <div class="card">
     <div class="logo">AL</div>
-    <div class="title">ANH LIN VOICE PRO</div>
-
+    <h2 style="margin-bottom:20px; background: linear-gradient(to right, #00d2ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ANH LIN VOICE PRO</h2>
+    
     <div class="box">
-        <span class="label">1. Tạo giọng mẫu mới</span>
-        <input type="file" id="f1" accept="audio/*">
-        <input type="text" id="vName" placeholder="Tên giọng (VD: Anh Lin)">
-        <button id="b1">HUẤN LUYỆN AI</button>
-    </div>
-
-    <div class="box">
-        <span class="label">2. Đổi giọng AI</span>
-        <select id="vList"><option>Đang tải danh sách...</option></select>
+        <label style="font-size:12px; color:var(--p)">1. CHỌN GIỌNG AI</label>
+        <select id="vList"><option value="">Đang kết nối ElevenLabs...</option></select>
+        
+        <label style="font-size:12px; color:var(--p)">2. GHI ÂM HOẶC CHỌN FILE</label>
         <div style="display: flex; gap: 8px;">
-            <button id="recS" class="btn-rec">🎤 GHI ÂM</button>
-            <button id="recE" class="btn-stop" style="display:none">🛑 DỪNG</button>
+            <button id="recS" style="background:#ef4444">🎤 GHI ÂM</button>
+            <button id="recE" style="background:#f97316; display:none">🛑 DỪNG</button>
         </div>
-        <input type="file" id="f2" accept="audio/*">
-        <button id="b2">BẮT ĐẦU CHUYỂN ĐỔI</button>
+        <input type="file" id="fInput" accept="audio/*">
+        
+        <button id="convertBtn" style="margin-top:10px">BẮT ĐẦU ĐỔI GIỌNG</button>
     </div>
 
     <div id="status">Sẵn sàng!</div>
     <audio id="player" controls></audio>
-    <button id="dl" class="btn-dl">⬇️ TẢI ÂM THANH VỀ MÁY</button>
+    <button id="dlBtn" class="btn-dl">⬇️ TẢI GIỌNG VỀ MÁY</button>
 </div>
 
 <script>
+    // Mã API Key mới để khắc phục lỗi "Đang tải"
     const KEY = "sk_9dcfa023b4ba75ae26c8c5158d5f36474ca82c68c13035e2";
-    const st = document.getElementById('status');
-    const ply = document.getElementById('player');
-    const dlB = document.getElementById('dl');
-    let mRec, chunks = [], blob;
+    const status = document.getElementById('status');
+    const vList = document.getElementById('vList');
+    const player = document.getElementById('player');
+    const dlBtn = document.getElementById('dlBtn');
+    let mRec, chunks = [], blobAudio;
 
-    async function getV() {
+    // Lấy danh sách giọng nói
+    async function loadVoices() {
         try {
             const r = await fetch('https://api.elevenlabs.io/v1/voices', { headers: {'xi-api-key': KEY} });
             const d = await r.json();
-            document.getElementById('vList').innerHTML = d.voices.map(v => `<option value="${v.voice_id}">${v.name}</option>`).join('');
-        } catch (e) { st.innerText = "Lỗi tải giọng!"; }
+            if (d.voices) {
+                vList.innerHTML = d.voices.map(v => `<option value="${v.voice_id}">${v.name}</option>`).join('');
+                status.innerText = "✅ Đã kết nối thành công!";
+            }
+        } catch (e) { 
+            status.innerText = "❌ Lỗi: Không thể lấy danh sách giọng!";
+            vList.innerHTML = "<option>Lỗi kết nối API</option>";
+        }
     }
-    getV();
+    loadVoices();
 
+    // Ghi âm
     document.getElementById('recS').onclick = async () => {
-        const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mRec = new MediaRecorder(s);
-        mRec.ondataavailable = e => chunks.push(e.data);
-        mRec.onstop = () => {
-            blob = new Blob(chunks, { type: 'audio/mp3' });
-            st.innerText = "✅ Ghi âm xong!";
-        };
-        chunks = []; mRec.start();
-        document.getElementById('recS').style.display = "none";
-        document.getElementById('recE').style.display = "block";
-        st.innerText = "🔴 Đang ghi âm...";
+        try {
+            const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mRec = new MediaRecorder(s);
+            mRec.ondataavailable = e => chunks.push(e.data);
+            mRec.onstop = () => {
+                blobAudio = new Blob(chunks, { type: 'audio/mp3' });
+                status.innerText = "✅ Đã ghi âm xong!";
+            };
+            chunks = []; mRec.start();
+            document.getElementById('recS').style.display = "none";
+            document.getElementById('recE').style.display = "block";
+            status.innerText = "🔴 Đang ghi âm...";
+        } catch (e) { alert("Bạn cần cho phép Micro để ghi âm!"); }
     };
 
     document.getElementById('recE').onclick = () => {
@@ -93,35 +90,44 @@
         document.getElementById('recE').style.display = "none";
     };
 
-    document.getElementById('b1').onclick = async () => {
-        const f = document.getElementById('f1').files[0];
-        const n = document.getElementById('vName').value;
-        if (!f || !n) return alert("Thiếu file hoặc tên!");
-        st.innerText = "⏳ Đang tạo giọng...";
-        const fd = new FormData(); fd.append('name', n); fd.append('files', f);
-        const r = await fetch('https://api.elevenlabs.io/v1/voices/add', {
-            method: 'POST', headers: {'xi-api-key': KEY}, body: fd
-        });
-        if (r.ok) { st.innerText = "✅ Đã thêm!"; getV(); } else { st.innerText = "❌ Lỗi!"; }
-    };
+    // Đổi giọng và Tải về
+    document.getElementById('convertBtn').onclick = async () => {
+        const fileIn = document.getElementById('fInput').files[0];
+        const finalAudio = fileIn || blobAudio;
+        
+        if (!vList.value) return alert("Vui lòng đợi danh sách giọng tải xong!");
+        if (!finalAudio) return alert("Hãy ghi âm hoặc chọn file trước!");
 
-    document.getElementById('b2').onclick = async () => {
-        const fi = document.getElementById('f2').files[0];
-        const target = fi || blob;
-        if (!target) return alert("Hãy chọn file hoặc ghi âm!");
-        st.innerText = "⚡ Đang xử lý...";
-        dlB.style.display = "none"; ply.style.display = "none";
-        const fd = new FormData(); fd.append('audio', target); fd.append('model_id', 'eleven_multilingual_sts_v2');
-        const r = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${document.getElementById('vList').value}`, {
-            method: 'POST', headers: {'xi-api-key': KEY}, body: fd
-        });
-        if (r.ok) {
-            const b = await r.blob(); const u = URL.createObjectURL(b);
-            ply.src = u; ply.style.display = "block"; ply.play();
-            dlB.style.display = "block";
-            dlB.onclick = () => { const a = document.createElement('a'); a.href = u; a.download = 'AnhLin_AI.mp3'; a.click(); };
-            st.innerText = "🎉 Hoàn tất!";
-        } else { st.innerText = "❌ Lỗi đổi giọng!"; }
+        status.innerText = "⚡ Đang AI hóa giọng nói...";
+        dlBtn.style.display = "none";
+        player.style.display = "none";
+
+        const fd = new FormData();
+        fd.append('audio', finalAudio);
+        fd.append('model_id', 'eleven_multilingual_sts_v2');
+
+        try {
+            const r = await fetch(`https://api.elevenlabs.io/v1/speech-to-speech/${vList.value}`, {
+                method: 'POST', headers: {'xi-api-key': KEY}, body: fd
+            });
+
+            if (r.ok) {
+                const b = await r.blob();
+                const u = URL.createObjectURL(b);
+                player.src = u;
+                player.style.display = "block";
+                player.play();
+                
+                dlBtn.style.display = "block";
+                dlBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = u;
+                    a.download = 'AnhLin_VoiceAI.mp3';
+                    a.click();
+                };
+                status.innerText = "🎉 Hoàn tất! Bạn có thể nghe và tải về.";
+            } else { status.innerText = "❌ Lỗi: Hết lượt dùng hoặc file lỗi!"; }
+        } catch (e) { status.innerText = "❌ Lỗi đường truyền!"; }
     };
 </script>
 </body>
